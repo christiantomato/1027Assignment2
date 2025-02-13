@@ -153,6 +153,11 @@ public class Train {
 
     //toString
     public String toString() {
+        //if train empty
+        if(this.locomotive == null) {
+            return "The train is empty";
+        }
+        
         String s = "";
         //go through the list
         DoubleNode<TrainCar> current = this.locomotive;
