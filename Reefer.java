@@ -1,3 +1,11 @@
+/*
+CS 1027B – Assignment 2
+Name: Christian Tamayo
+Student Number: 251 433 749
+Email: ctamayo@uwo.ca
+Created: Feb 10, 2024
+*/
+
 //inherits from TrainCar
 public class Reefer extends TrainCar {
     //instance variables
@@ -36,7 +44,7 @@ public class Reefer extends TrainCar {
         //if not, theres still a possibility other is a reefer with similar temperature
         else if(other instanceof Reefer) {
             //check if they are within 5 degrees of each other, and use late binding since we are determing type at runtime.
-            if((this.temp - ((Reefer) other).temp) <= 5 || (this.temp - ((Reefer) other).temp) <= -5) {
+            if((this.temp - ((Reefer) other).temp) <= 5 && (this.temp - ((Reefer) other).temp) >= -5) {
                 return true;
             }
             return false;

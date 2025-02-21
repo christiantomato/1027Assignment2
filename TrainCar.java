@@ -1,3 +1,11 @@
+/*
+CS 1027B – Assignment 2
+Name: Christian Tamayo
+Student Number: 251 433 749
+Email: ctamayo@uwo.ca
+Created: Feb 10, 2024
+*/
+
 public class TrainCar {
     //instance variables as specified
     private int weight;

@@ -1,3 +1,11 @@
+/*
+CS 1027B – Assignment 2
+Name: Christian Tamayo
+Student Number: 251 433 749
+Email: ctamayo@uwo.ca
+Created: Feb 21, 2024
+*/
+
 public class Train {
     //instance variables
     private DoubleNode<TrainCar> locomotive;
@@ -93,26 +101,31 @@ public class Train {
     public void removeCar(TrainCar car) {
         //loop through and find it
         DoubleNode<TrainCar> current = this.caboose;
-        //this while loop statement ensures we never try to remove the locomotive
-        while(current.getPrevious() != null) {
+
+        //check for empty train
+        if(current == null) {
+            throw new TrainException("Train is empty");
+        }
+
+        //loop through train from back to front
+        while(current != null) {
             //find it
             if(current.getElement().equals(car)) {
                 //case1: caboose
                 if(current.equals(this.caboose)) {
-                    //does the train only have one car too though
-                    if(current.equals(this.locomotive)) {
-                        //so now we will have empty train
-                        this.locomotive = null;
-                        this.caboose = null;
-                    }
-                    else {
-                        //its always okay to remove caboose
-                        this.caboose = current.getPrevious();
-                        this.caboose.setNext(null);
-                        break;
-                    }
+                    //its always okay to remove caboose
+                    this.caboose = current.getPrevious();
+                    this.caboose.setNext(null);
+                    break;
                 }
-                //case2: anything in between
+                //case2: locomotive
+                else if(current.equals(this.locomotive)) {
+                    //its always okay I guess
+                    this.locomotive = current.getNext();
+                    this.locomotive.setPrevious(null);
+                    break;
+                }
+                //case3: anything in between
                 else {
                     //check if the removal will be okay
                     if(current.getPrevious().getElement().canConnect(current.getNext().getElement())) {
@@ -123,13 +136,14 @@ public class Train {
                     }
                     else {
                         //we cannot remove
-                        throw new TrainException("Cannot Remove Car");
+                        throw new TrainException("Removing violates connections");
                     }
                 } 
             }
-            if(current.getPrevious().equals(this.locomotive)) {
+            
+            if(current.equals(this.locomotive)) {
                 //if we reached here it does not exist
-                throw new TrainException("Cannot Remove Car - It does not exist");
+                throw new TrainException("Car does not exist");
             }
             //move through
             current = current.getPrevious();
@@ -137,7 +151,6 @@ public class Train {
     }
 
     //method to try to remove a car
-    //method to try to add a car
     public boolean tryRemoveCar(TrainCar car) {
         //try to add the car in this method, so exceptions will be caught here
         try {
@@ -157,13 +170,13 @@ public class Train {
         if(this.locomotive == null) {
             return "The train is empty";
         }
-        
+
         String s = "";
         //go through the list
         DoubleNode<TrainCar> current = this.locomotive;
         while(current != null) {
             //if on the last car
-            if(current.getNext() == null) {
+            if(current == this.caboose) {
                 s += current.getElement().toString();
             }
             else {
@@ -172,17 +185,5 @@ public class Train {
             current = current.getNext();
         }
         return s;
-    }
-
-    /*
-    public static void main(String[] args) {
-        Train myTrain = new Train();
-        Reefer car1 = new Reefer(3, 10, "food");
-        TrainCar car2 = new TrainCar(5, "food");
-        TrainCar car3 = new TrainCar(5, "lumber");
-        TrainCar car4 = new TrainCar(7, "lumber");
-        TrainCar car5 = new TrainCar(5, "oil");
-        TrainCar car6 = new TrainCar(3, "steel");
-    }
-     */
+    } 
 }
